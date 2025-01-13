@@ -10,3 +10,6 @@ def homePageView(request):
 
 def aboutPageView(request):
     return render(request, "about.html")
+
+def momonaPageView(request):
+    return render(request, "momona.html")
