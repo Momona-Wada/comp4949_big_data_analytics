@@ -1,1 +1,31 @@
-<b>Hello from home.html</b>
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Home page</h1>
+
+    <h3>Full Name: {{first_name}} {{last_name}}</h3>
+
+    <form>
+        <!-- This form references the homePost route -->
+        <!-- csrf_token: フォームが安全に送信されることを保証するためのセキュリティ機能 -->
+        {% csrf_token %}
+
+        <h3>Years Work Experience</h3>
+
+        <!-- Show radio button list named `choice` -->
+        {% for choice in my_numbers %}
+            <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice }}">
+            <label for="choice{{ forloop.counter }}">{{ choice }}</label><br>
+        {% endfor %}
+
+        <!-- Submit button is also contained in the form -->
+        <input type="submit" value="POST YOUR CHOICE">
+    </form>
+
+    <!-- This error will notify the user if there are issues with the POST request -->
+    {% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+
+{% endblock content %}
