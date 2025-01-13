@@ -21,14 +21,17 @@ def momonaPageView(request):
 def homePost(request):
     # create variable to store choice that is recognized through entire function
     choice = -999
+    gmat = -999
 
     try:
         # Extract value from request object by control name.
         current_choice = request.POST["choice"]
+        gmat_str = request.POST["gmat"]
 
         # Crude debugging effort
         print(f"*** Years work experience: {current_choice}")
         choice = int(current_choice)
+        gmat = float(gmat_str)
 
     except:
         return render(request, "home.html", {
@@ -38,9 +41,10 @@ def homePost(request):
     else:
         # always return an HttpResponseRedirect after successfully dealing with POST data.
         # This prevents data from being posted twice if a user hits the Back button
-        return HttpResponseRedirect(reverse("results", args=(choice,)))
+        return HttpResponseRedirect(reverse("results",
+                                            kwargs={"choice": choice, "gmat": gmat},))
 
 
-def results(request, choice):
+def results(request, choice, gmat):
     print("*** Inside results()")
-    return render(request, "result.html", {"choice": choice})
+    return render(request, "results.html", {"choice": choice, "gmat": gmat})

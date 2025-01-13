@@ -5,7 +5,7 @@
 
     <h3>Full Name: {{first_name}} {{last_name}}</h3>
 
-    <form>
+    <form method="post" action="{% url 'home_post' %}">
         <!-- This form references the homePost route -->
         <!-- csrf_token: フォームが安全に送信されることを保証するためのセキュリティ機能 -->
         {% csrf_token %}
@@ -18,9 +18,14 @@
             <label for="choice{{ forloop.counter }}">{{ choice }}</label><br>
         {% endfor %}
 
+        <h3>GMAT Score</h3>
+        <input type="text" id="gmat" name="gmat"><br><br>
+
         <!-- Submit button is also contained in the form -->
         <input type="submit" value="POST YOUR CHOICE">
     </form>
+
+
 
     <!-- This error will notify the user if there are issues with the POST request -->
     {% if error_message %}
