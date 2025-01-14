@@ -1,7 +1,14 @@
+import os
+import pickle
+
+import pandas as pd
 from django.shortcuts import render, HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
+from django.conf import settings
 from django.views.generic import TemplateView
+import pdb
+
 
 
 # Create your views here.
@@ -27,6 +34,10 @@ def homePost(request):
         # Extract value from request object by control name.
         current_choice = request.POST["choice"]
         gmat_str = request.POST["gmat"]
+        # print("Just before Momo's breakpoint")
+        # pdb.set_trace()
+        # breakpoint()
+        # print("Just after breakpoint")
 
         # Crude debugging effort
         print(f"*** Years work experience: {current_choice}")
@@ -47,4 +58,31 @@ def homePost(request):
 
 def results(request, choice, gmat):
     print("*** Inside results()")
-    return render(request, "results.html", {"choice": choice, "gmat": gmat})
+
+    # make model absolute path
+    model_path = os.path.join(settings.BASE_DIR, "model_pkl")
+
+    # load saved model
+    with open(model_path, "rb") as f:
+        loaded_model = pickle.load(f)
+
+    # create a single prediction
+    single_sample_df = pd.DataFrame(columns=["gmat", "work_experience"])
+
+    work_experience = float(choice)
+    print(f"*** GMAT Score: {gmat}")
+    print(f"*** Years experience: {work_experience}")
+    single_sample_df = single_sample_df._append(
+        {
+                "gmat": gmat,
+                "work_experience": work_experience
+            }, ignore_index=True)
+
+    single_prediction = loaded_model.predict(single_sample_df)
+    print(f"Single prediction: {single_prediction}")
+
+    return render(request, "results.html", {
+        "choice": work_experience,
+        "gmat": gmat,
+        "prediction": single_prediction
+    })

@@ -1,11 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<h1>Results page</h1>
-<p>You entered the following information:</p><br>
-
-<p>Years work experience: {{ choice }}</p><br>
-<p>GMAT Score {{ gmat }}</p>
-
+    <h1>Results page</h1>
+    You entered the following information:<br>
+    Years work experience: {{ choice }}<br>
+    GMAT Score: {{ gmat }}
+    Prediction: {{ prediction }}
 {% endblock %}
